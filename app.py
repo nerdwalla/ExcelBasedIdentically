@@ -4,7 +4,8 @@ from data.helper.agent_helper import AgentDataHelper
 from plotter.plot_map import MapPlotter
 from plotter.plot_pie import PiePlotter
 from all_data_loader import load_all_data, load_customer_data
-from threading import Thread
+import logging
+from logging.handlers import RotatingFileHandler
 import concurrent.futures
 
 app = Flask(__name__)
@@ -18,6 +19,12 @@ data_loader_logger = None
 plotter_logger = None
 customer_dao_logger = None
 
+logging.basicConfig(handlers=[RotatingFileHandler('record.log', maxBytes=1024000, backupCount=2)],
+                    level=logging.DEBUG,
+                    format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+
+
+# app.logger.info('Info level log')
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
@@ -25,21 +32,24 @@ def index():
     if request.method == 'POST':
         pass
     elif request.method == 'GET':
-        print('Page Loaded')
+        # print('Page Loaded')
+        app.logger.info('Page Loaded')
         # find_duplicate_customers()
     return render_template('index.html')
 
 
 @app.route('/add_user/')
 def add_user():
-    print('Add user clicked')
+    # print('Add user clicked')
+    app.logger.info('Add User Clicked')
     return ""
 
 
 @app.route('/plot-agents/')
 def plot_agents():
     # global server_logger
-    print('plot-agent got clicked!')
+    # print('plot-agent got clicked!')
+    app.logger.info('plot-agent got clicked!')
     image_file_name = create_plot_image()
     return image_file_name
 
@@ -47,7 +57,8 @@ def plot_agents():
 @app.route('/remove-duplicates/')
 def remove_duplicates():
     # global server_logger
-    print('remove_duplicates got clicked!')
+    # print('remove_duplicates got clicked!')
+    app.logger.info('remove_duplicates got clicked!')
     global duplicate_customer_df
     try:
         # reload_customer_data()
@@ -59,24 +70,26 @@ def remove_duplicates():
             div_tag = "<div><p>No duplicates found</p></div>"
             return div_tag
     except Exception as e:
-        print(e)
+        # print(e)
+        app.logger.error(e)
 
 
 @app.route('/find-duplicates/')
 def find_duplicates():
     # global server_logger
-    print('find_duplicates got clicked!')
+    # print('find_duplicates got clicked!')
+    app.logger.info('find_duplicates got clicked!')
     global duplicate_customer_df
 
     table_data = build_customer_table(duplicate_customer_df)
     return table_data
 
 
-
 @app.route('/find-systems/')
 def find_systems():
     # global server_logger
-    print('find-systems got clicked!')
+    # print('find-systems got clicked!')
+    app.logger.info('find_systems got clicked!')
     div_tag = plot_system_pie(duplicate_customer_df)
     return div_tag
 
@@ -84,7 +97,8 @@ def find_systems():
 @app.route('/duplicate-customer-type/')
 def duplicate_customer_type():
     global server_logger
-    print('duplicate_customer_type got clicked!')
+    # print('duplicate_customer_type got clicked!')
+    app.logger.info('duplicate_customer_type got clicked!')
     div_tag = plot_customer_type_pie(duplicate_customer_df)
     return div_tag
 
@@ -149,7 +163,8 @@ def plot_customer_type_pie(duplicate_customers):
 def load_data():
     global customer_df, address_df, agent_address_df
     # get Data from customers table
-    print("Loading data...")
+    # print("Loading data...")
+    app.logger.info("Loading data...")
     result_queue = load_all_data(data_loader_logger)
 
     for result in result_queue:
@@ -171,14 +186,14 @@ def find_duplicate_customer_ids():
     return search_helper.find_duplicates()
 
 
-def delete_duplicate_customers(duplicate_cust_id_list):
-    global customer_df, server_logger
-    print("Number of duplicates: ", len(duplicate_cust_id_list))
-
-    if duplicate_cust_id_list is not None and len(duplicate_cust_id_list) != 0:
-        # delete the duplicates
-        dao = CustomerDAO()
-        dao.delete_customer(duplicate_cust_id_list)
+# def delete_duplicate_customers(duplicate_cust_id_list):
+#     global customer_df, server_logger
+#     print("Number of duplicates: ", len(duplicate_cust_id_list))
+#
+#     if duplicate_cust_id_list is not None and len(duplicate_cust_id_list) != 0:
+#         # delete the duplicates
+#         dao = CustomerDAO()
+#         dao.delete_customer(duplicate_cust_id_list)
 
 
 def find_duplicate_customers():
@@ -203,10 +218,12 @@ def create_plot_image():
         location_df = agent_helper.get_agents_location(duplicate_customer_df)
         plotter = MapPlotter("Agents with Duplicate Customers", plotter_logger)
         div_tag = plotter.plot_agents_to_map(location_df)
-        print(div_tag)
+        # print(div_tag)
+        app.logger.info(div_tag)
         return div_tag
     else:
         div_tag = "<div><p>No duplicates found</p></div>"
+        app.logger.info(div_tag)
         return div_tag
 
 
@@ -215,7 +232,8 @@ def reload_customer_data():
     with concurrent.futures.ThreadPoolExecutor() as executor:
         future = executor.submit(load_customer_data, data_loader_logger)
         return_value = future.result()
-        print(return_value)
+        # print(return_value)
+        app.logger.info(return_value)
     # result_queue = load_customer_data(data_loader_logger)
     for result in return_value:
         if "first_name" in result.columns:
@@ -229,4 +247,3 @@ if __name__ == '__main__':
     find_duplicate_customers()
     # Run Application
     app.run()
-

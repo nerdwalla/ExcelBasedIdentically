@@ -1,6 +1,7 @@
 import plotly.offline as pyo
 import plotly.graph_objects as go
 import pandas as pd
+import logging
 
 
 class PiePlotter:
@@ -8,15 +9,15 @@ class PiePlotter:
     def __init__(self, title, plotter_logger):
         self.title = title
         # Creating an object
-        self.logger = plotter_logger
+        self.logger = logging.getLogger(__name__)
 
     def plot_pie_for_systems(self, duplicate_customers_by_system):
         if duplicate_customers_by_system.empty:
-            print('PiePlotter:: Plotting Systems Type on Pie chart, Cant as '
+            self.logger.info('PiePlotter:: Plotting Systems Type on Pie chart, Cant as '
                               'duplicate_customers_by_system is Empty')
         else:
-            print('PiePlotter:: Plotting Systems on Pie chart ')
-            print(duplicate_customers_by_system)
+            self.logger.info('PiePlotter:: Plotting Systems on Pie chart ')
+            self.logger.info(duplicate_customers_by_system)
 
             duplicate_customers_by_system_counts = dict(duplicate_customers_by_system['updated_by'].value_counts())
 
@@ -38,15 +39,15 @@ class PiePlotter:
             )
 
             tag = pyo.plot(fig, include_plotlyjs=False, output_type='div')
-            print('PiePlotter:: DIV for Pie chart plotting ' + tag)
+            self.logger.info('PiePlotter:: DIV for Pie chart plotting ' + tag)
             return tag
 
     def plot_pie_for_customer_type(self, duplicate_customers, title):
         if duplicate_customers.empty:
-            print('PiePlotter:: Plotting Customer Type on Pie chart, Cant as duplicate_customers '
+            self.logger.info('PiePlotter:: Plotting Customer Type on Pie chart, Cant as duplicate_customers '
                               'is Empty')
         else:
-            print('PiePlotter:: Plotting Customer Type on Pie chart ')
+            self.logger.info('PiePlotter:: Plotting Customer Type on Pie chart ')
 
             duplicate_customers_cust_type_counts = dict(duplicate_customers['cust_type'].value_counts())
             cust_type_counts = dict()
@@ -71,5 +72,5 @@ class PiePlotter:
             )
 
             tag = pyo.plot(fig, include_plotlyjs=False, output_type='div')
-            print('PiePlotter:: DIV for Pie Chart plotting ' + tag)
+            self.logger.info('PiePlotter:: DIV for Pie Chart plotting ' + tag)
             return tag

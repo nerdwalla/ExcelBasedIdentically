@@ -1,6 +1,6 @@
 from threading import Thread, Lock
 import pandas as pd
-# import logging
+import logging
 
 
 class FileReaderWorker(Thread):
@@ -11,22 +11,23 @@ class FileReaderWorker(Thread):
 
         self.csvpath = csvpath
         self.result_queue = result_queue
+        self.logger = logging.getLogger(__name__)
 
         # # Setting the threshold of logger to DEBUG
         # self.logger.setLevel(logging.INFO)
 
     def run(self):
-        print("Reading File from..." + str(self.csvpath))
+        self.logger.info("Reading File from..." + str(self.csvpath))
         try:
 
             data = pd.read_csv(self.csvpath)
 
-            print("Result with: " + str(self.csvpath))
-            print(data)
+            self.logger.info("Result with: " + str(self.csvpath))
+            self.logger.info(data)
             self.result_queue.append(data)
         except Exception as e:
-            print("Result with: " + str(e))
+            self.logger.error("Result with: " + str(e))
 
-        print("Done With Reading File from .." + str(self.csvpath))
+        self.logger.info("Done With Reading File from .." + str(self.csvpath))
 
 

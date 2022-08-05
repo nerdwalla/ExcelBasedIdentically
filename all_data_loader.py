@@ -7,16 +7,17 @@ def load_all_data(logger):
     delay = 1
     result_queue = []
     start_time = time.time()
-    print('Start time: ' + str(start_time))
+    logger = logging.getLogger(__name__)
+    logger.info('Start time: ' + str(start_time))
 
     BASE_DIR = os.getcwd()
 
     CUSTOMER_FILE_PATH = os.path.join(BASE_DIR, "csvdata", "customers.csv")
-    print(CUSTOMER_FILE_PATH)
+    logger.info(CUSTOMER_FILE_PATH)
     ADDRESS_FILE_PATH = os.path.join(BASE_DIR, "csvdata", "addresses.csv")
-    print(ADDRESS_FILE_PATH)
+    logger.info(ADDRESS_FILE_PATH)
     AGENT_ADDRESS_FILE_PATH =os.path.join(BASE_DIR, "csvdata", "agentaddresses.csv")
-    print(AGENT_ADDRESS_FILE_PATH)
+    logger.info(AGENT_ADDRESS_FILE_PATH)
     worker1 = FileReaderWorker(CUSTOMER_FILE_PATH, result_queue)
     worker2 = FileReaderWorker(ADDRESS_FILE_PATH, result_queue)
     worker3 = FileReaderWorker(AGENT_ADDRESS_FILE_PATH, result_queue)
@@ -35,8 +36,8 @@ def load_all_data(logger):
     worker3.join()
 
     end_time = time.time()
-    print('End time: ' + str(end_time))
-    print("total time: " + str(end_time - start_time))
+    logger.info('End time: ' + str(end_time))
+    logger.info("total time: " + str(end_time - start_time))
     if job_done is True:
         return result_queue
 
@@ -46,11 +47,11 @@ def load_customer_data(logger):
     BASE_DIR = os.getcwd()
 
     CUSTOMER_FILE_PATH = os.path.join(BASE_DIR, "csvdata", "customers.csv")
-    print(CUSTOMER_FILE_PATH)
+    logger.info(CUSTOMER_FILE_PATH)
     delay = 1
     result_queue = []
     start_time = time.time()
-    print('Start time: ' + str(start_time))
+    logger.info('Start time: ' + str(start_time))
     worker1 = FileReaderWorker(CUSTOMER_FILE_PATH, result_queue)
     worker1.start()
 
@@ -61,7 +62,7 @@ def load_customer_data(logger):
     worker1.join()
 
     end_time = time.time()
-    print('End time: ' + str(end_time))
-    print("total time: " + str(end_time - start_time))
+    logger.info('End time: ' + str(end_time))
+    logger.info("total time: " + str(end_time - start_time))
     if job_done:
         return result_queue
