@@ -4,8 +4,6 @@ from data.helper.agent_helper import AgentDataHelper
 from plotter.plot_map import MapPlotter
 from plotter.plot_pie import PiePlotter
 from all_data_loader import load_all_data, load_customer_data
-import logging
-from logging.handlers import RotatingFileHandler
 import concurrent.futures
 
 app = Flask(__name__)
@@ -13,18 +11,7 @@ customer_df = None
 address_df = None
 agent_address_df = None
 duplicate_customer_df = None
-server_logger = None
-db_logger = None
-data_loader_logger = None
-plotter_logger = None
-customer_dao_logger = None
 
-logging.basicConfig(handlers=[RotatingFileHandler('record.log', maxBytes=1024000, backupCount=2)],
-                    level=logging.DEBUG,
-                    format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
-
-
-# app.logger.info('Info level log')
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
@@ -33,7 +20,7 @@ def index():
         pass
     elif request.method == 'GET':
         # print('Page Loaded')
-        app.logger.info('Page Loaded')
+        print('Page Loaded')
         # find_duplicate_customers()
     return render_template('index.html')
 
@@ -41,15 +28,15 @@ def index():
 @app.route('/add_user/')
 def add_user():
     # print('Add user clicked')
-    app.logger.info('Add User Clicked')
+    print('Add User Clicked')
     return ""
 
 
 @app.route('/plot-agents/')
 def plot_agents():
     # global server_logger
-    # print('plot-agent got clicked!')
-    app.logger.info('plot-agent got clicked!')
+    print('plot-agent got clicked!')
+    # app.logger.info('plot-agent got clicked!')
     image_file_name = create_plot_image()
     return image_file_name
 
@@ -57,8 +44,8 @@ def plot_agents():
 @app.route('/remove-duplicates/')
 def remove_duplicates():
     # global server_logger
-    # print('remove_duplicates got clicked!')
-    app.logger.info('remove_duplicates got clicked!')
+    print('remove_duplicates got clicked!')
+    # app.logger.info('remove_duplicates got clicked!')
     global duplicate_customer_df
     try:
         # reload_customer_data()
@@ -70,15 +57,15 @@ def remove_duplicates():
             div_tag = "<div><p>No duplicates found</p></div>"
             return div_tag
     except Exception as e:
-        # print(e)
-        app.logger.error(e)
+        print(e)
+        # app.logger.error(e)
 
 
 @app.route('/find-duplicates/')
 def find_duplicates():
     # global server_logger
-    # print('find_duplicates got clicked!')
-    app.logger.info('find_duplicates got clicked!')
+    print('find_duplicates got clicked!')
+    # app.logger.info('find_duplicates got clicked!')
     global duplicate_customer_df
 
     table_data = build_customer_table(duplicate_customer_df)
@@ -88,8 +75,8 @@ def find_duplicates():
 @app.route('/find-systems/')
 def find_systems():
     # global server_logger
-    # print('find-systems got clicked!')
-    app.logger.info('find_systems got clicked!')
+    print('find-systems got clicked!')
+    # app.logger.info('find_systems got clicked!')
     div_tag = plot_system_pie(duplicate_customer_df)
     return div_tag
 
@@ -97,8 +84,8 @@ def find_systems():
 @app.route('/duplicate-customer-type/')
 def duplicate_customer_type():
     global server_logger
-    # print('duplicate_customer_type got clicked!')
-    app.logger.info('duplicate_customer_type got clicked!')
+    print('duplicate_customer_type got clicked!')
+    # app.logger.info('duplicate_customer_type got clicked!')
     div_tag = plot_customer_type_pie(duplicate_customer_df)
     return div_tag
 
@@ -140,7 +127,7 @@ def plot_system_pie(duplicate_customers):
         duplicate_customers_by_system = duplicate_customers[
             ~duplicate_customers["updated_by"].str.startswith(agent_starter_string, na=False)]
 
-        plotter = PiePlotter("Systems with Duplicate Customers", plotter_logger)
+        plotter = PiePlotter("Systems with Duplicate Customers")
 
         div_tag = plotter.plot_pie_for_systems(duplicate_customers_by_system)
         return div_tag
@@ -150,9 +137,8 @@ def plot_system_pie(duplicate_customers):
 
 
 def plot_customer_type_pie(duplicate_customers):
-    global plotter_logger
     if not duplicate_customers.empty:
-        plotter = PiePlotter("Duplicate Customers by customer type", plotter_logger)
+        plotter = PiePlotter("Duplicate Customers by customer type")
         div_tag = plotter.plot_pie_for_customer_type(duplicate_customers, "Duplicate Customers by customer type")
         return div_tag
     else:
@@ -163,9 +149,9 @@ def plot_customer_type_pie(duplicate_customers):
 def load_data():
     global customer_df, address_df, agent_address_df
     # get Data from customers table
-    # print("Loading data...")
-    app.logger.info("Loading data...")
-    result_queue = load_all_data(data_loader_logger)
+    print("Loading data...")
+    # app.logger.info("Loading data...")
+    result_queue = load_all_data()
 
     for result in result_queue:
         if "first_name" in result.columns:
@@ -212,11 +198,11 @@ def find_agents_ids_of_duplicate_customers():
 
 
 def create_plot_image():
-    global duplicate_customer_df, server_logger, plotter_logger
+    global duplicate_customer_df
     if not duplicate_customer_df.empty:
         agent_helper = AgentDataHelper(agent_address_df)
         location_df = agent_helper.get_agents_location(duplicate_customer_df)
-        plotter = MapPlotter("Agents with Duplicate Customers", plotter_logger)
+        plotter = MapPlotter("Agents with Duplicate Customers")
         div_tag = plotter.plot_agents_to_map(location_df)
         # print(div_tag)
         app.logger.info(div_tag)
@@ -228,12 +214,12 @@ def create_plot_image():
 
 
 def reload_customer_data():
-    global customer_df, data_loader_logger
+    global customer_df
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        future = executor.submit(load_customer_data, data_loader_logger)
+        future = executor.submit(load_customer_data)
         return_value = future.result()
-        # print(return_value)
-        app.logger.info(return_value)
+        print(return_value)
+        # app.logger.info(return_value)
     # result_queue = load_customer_data(data_loader_logger)
     for result in return_value:
         if "first_name" in result.columns:

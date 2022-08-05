@@ -1,24 +1,23 @@
 import plotly.graph_objects as go
 import plotly.offline as pyo
-import logging
 
 
 class MapPlotter:
 
-    def __init__(self, title, plotter_logger):
+    def __init__(self, title):
         self.title = title
         # Creating an object
         # self.logger = plotter_logger
-        self.logger = logging.getLogger(__name__)
+        # self.logger = logging.getLogger(__name__)
 
     def plot_agents_to_map(self, location_df):
         if location_df.empty:
             # print('MapPlotter:: Plotting agents on map,  Cant map as location_df is empty ')
-            self.logger.info('MapPlotter:: Plotting agents on map,  Cant map as location_df is empty ')
+            print('MapPlotter:: Plotting agents on map,  Cant map as location_df is empty ')
         else:
-            self.logger.info('MapPlotter:: Plotting agents on map ')
+            print('MapPlotter:: Plotting agents on map ')
 
-            self.logger.info(location_df)
+            print(location_df)
             colors = ["#FEDE00", "#A64AC9", "#04ECF0", "#FF652F", "#C55FFC"]
             location_df['count'] = location_df['count'].astype(str).astype(int)
             count_max = location_df['count'].max()
@@ -49,5 +48,5 @@ class MapPlotter:
                 )
             )
             tag = pyo.plot(fig, include_plotlyjs=False, output_type='div')
-            self.logger.info('MapPlotter:: DIV for map plotting ' + tag)
+            print('MapPlotter:: DIV for map plotting ' + tag)
             return tag
