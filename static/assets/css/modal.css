@@ -1,0 +1,161 @@
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  overflow-y: initial !important
+  overflow-y: scroll;
+
+}
+
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#modal-table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+}
+
+/*#modal-table tbody {
+  display:block;
+  overflow:auto;
+  height:500px;
+}
+
+#modal-table thead tr {
+   display: block;
+}
+
+#modal-table td, #modal-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  width: 400px;
+}*/
+
+#modal-table tr:nth-child(even){background-color: #f2f2f2;}
+
+#modal-table tr:hover {background-color: #ddd;}
+
+#modal-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+
+#modal-table caption {
+  font-weight: bold;
+  font-size: 24px;
+  text-align: left;
+  color: #333;
+  padding-bottom: 20px;
+}
+
+#modal-table caption .count {
+    background-color: #FFFF00;
+}
+
+.lds-facebook {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-facebook div {
+  display: inline-block;
+  position: absolute;
+  left: 8px;
+  width: 16px;
+  background: #fff;
+  animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+.lds-facebook div:nth-child(1) {
+  left: 8px;
+  animation-delay: -0.24s;
+}
+.lds-facebook div:nth-child(2) {
+  left: 32px;
+  animation-delay: -0.12s;
+}
+.lds-facebook div:nth-child(3) {
+  left: 56px;
+  animation-delay: 0;
+}
+@keyframes lds-facebook {
+  0% {
+    top: 8px;
+    height: 64px;
+  }
+  50%, 100% {
+    top: 24px;
+    height: 32px;
+  }
+}
+
+.loading {
+    position: fixed;
+    top: 0; right: 0;
+    bottom: 0; left: 0;
+    background: #fff;
+    z-index: 2;
+}
+.loader {
+    left: 50%;
+    margin-left: -4em;
+    font-size: 10px;
+    z-index: 3;
+    border: .8em solid rgba(218, 219, 223, 1);
+    border-left: .8em solid rgba(58, 166, 165, 1);
+    animation: spin 1.1s infinite linear;
+}
+.loader, .loader:after {
+    border-radius: 50%;
+    width: 8em;
+    height: 8em;
+    display: block;
+    position: absolute;
+    top: 50%;
+    margin-top: -4.05em;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}

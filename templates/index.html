@@ -1,0 +1,795 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>identical.ly</title>
+  <link rel="icon" href="{{ url_for('static',filename='assets/images/verify.png') }}">
+
+  <!-- Custom Google fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Raleway:400,500,300,700' rel='stylesheet' type='text/css'>
+  <link href="http://fonts.googleapis.com/css?family=Crimson+Text:400,600" rel="stylesheet" type="text/css">
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600" rel="stylesheet" type="text/css">
+
+  <!-- Bootstrap CSS Style -->
+  <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/bootstrap.min.css') }}">
+
+  <!-- Template CSS Style -->
+  <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/style.css') }}">
+
+  <!-- Animate CSS  -->
+  <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/animate.css') }}">
+
+  <!-- FontAwesome 4.3.0 Icons  -->
+  <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/font-awesome.min.css') }}">
+
+  <!-- et line font  -->
+  <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/et-line-font/style.css') }}">
+
+  <!-- BXslider CSS  -->
+  <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/bxslider/jquery.bxslider.css') }}">
+
+  <!-- Owl Carousel CSS Style -->
+  <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/owl-carousel/owl.carousel.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/owl-carousel/owl.theme.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/owl-carousel/owl.transitions.css') }}">
+
+  <!-- Magnific-Popup CSS Style -->
+  <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/magnific-popup/magnific-popup.css') }}">
+
+  <!-- modal-->
+   <link rel="stylesheet" href="{{ url_for('static',filename='assets/css/modal.css') }}">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+<!--  plotly-->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+
+  <!-- Preload the Whole Page -->
+  <div id="preloader">      
+    <div id="loading-animation">&nbsp;</div>
+  </div>
+  <div id="loading">
+    <div id="loader"></div>
+  </div>
+
+  <!-- Navbar -->
+  <header class="header">
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation-nav">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div id="together">
+            <a class="navbar-brand" href="#"><img src="{{ url_for('static',filename='assets/images/identically.png') }}"  height="50" alt="Identical.ly"></a>
+          </div>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navigation-nav">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="active"><a class="section-scroll" href="#wrapper">Home</a></li>
+<!--            <li><a href="#features-operations">Operations</a></li>-->
+            <li><a href="#features-benefits">Benefits</a></li>
+            <li><a href="#team-section">Team</a></li>
+            <li><a href="#features-next">What's Next?</a></li>
+
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container -->
+    </nav>
+  </header>
+  <!-- End Navbar -->
+
+  <div id="wrapper">
+
+    <div id="myModal" class="modal">
+<!--        <div id="lds-facebook" class="lds-facebook"><div></div><div></div><div></div></div>-->
+        <!-- Modal content -->
+          <div id="modal-content" class="modal-content">
+            <span id="close" class="close">&times;</span>
+
+            <table class="modal-table" id="modal-table">
+
+            </table>
+            <div id="map_data">
+            </div>
+            <form id="add_user_form" action="/add_user" method="POST" style="display: None;">
+              <p>Please select Customer Type:</p>
+              <input type="radio" id="person" name="customer_type" value="P">
+              <label for="person">Person</label><br>
+              <input type="radio" id="org" name="customer_type" value="O">
+              <label for="org">Organization</label><br>
+              <label for="fname">First name:</label>
+              <input type="text" id="fname" name="fname"><br><br>
+              <label for="lname">Last name:</label>
+              <input type="text" id="lname" name="lname"><br><br>
+              <label for="orgname">Organization Name:</label>
+              <input type="text" id="orgname" name="orgname"><br><br>
+              <label for="taxid">Tax ID:</label>
+              <input type="text" id="taxid" name="taxid"><br><br>
+              <label for="phone">Phone:</label>
+              <input type="text" id="phone" name="phone"><br><br>
+              <label for="email">Email:</label>
+              <input type="text" id="email" name="email"><br><br>
+              <p>Address Information</p>
+              <label for="street">Street:</label>
+              <input type="text" id="street" name="street"><br><br>
+              <label for="city">City:</label>
+              <input type="text" id="city" name="city"><br><br>
+              <label for="county">County:</label>
+              <input type="text" id="county" name="county"><br><br>
+              <label for="state">State:</label>
+              <input type="text" id="state" name="state"><br><br>
+              <label for="zip">Zip:</label>
+              <input type="text" id="zip" name="zip"><br><br>
+              <input id="form-submit"  type="submit" value="Submit">
+            </form>
+
+          </div>
+
+
+        </div>
+
+  <!-- Home page
+  ================================================== -->
+    <section>
+      <div id="features-operations" class="pad-sec">
+        <div class="container">
+
+          <div class="title-section big-title-sec animated out" data-animation="fadeInUp" data-delay="0">
+            <div class="row">
+              <div class="col-sm-8 col-sm-offset-2">
+                <h2 class="big-title">Operations</h2>
+                <hr>
+                <p class="about-text">Identical.ly provides following operations to users. These include removal and analysis of the data.</p>
+              </div>
+            </div> <!-- End row -->
+          </div> <!-- end title-section -->
+        <!--<button id="showduplicates">Open Modal</button>-->
+
+        <!-- The Modal -->
+
+          <div class="offer-boxes">
+
+            <div class="row">
+            <div id="removeduplicates">
+            <div class="col-sm-4">
+              <div class="offer-post text-center animated out" data-animation="fadeInLeft" data-delay="0">
+                <div class="offer-icon">
+                  <span >
+                    <img src="{{ url_for('static',filename='assets/images/duplication.png') }}" alt="" width="100" height="100" >
+                  </span>
+                </div>
+                <h4>Show Duplicates</h4>
+                <p>This operation reads data from data source and presents any possible duplicates based on the all the business rules on either Persons or Organization type of customers.</p>
+              </div> <!-- End offer-post -->
+            </div> <!-- End col-sm-4 -->
+            </div>
+
+            <div id="findagents">
+            <div class="col-sm-4">
+              <div class="offer-post text-center animated out" data-animation="fadeInUp" data-delay="0">
+                <div class="offer-icon">
+                  <span>
+                    <img src="{{ url_for('static',filename='assets/images/marketplace.png') }}" alt="" width="100" height="100" >
+                  </span>
+                </div>
+                <h4>Find Agents</h4>
+                <p>This operation reads data from data source and finds all the agents who have duplicate customers</p>
+              </div> <!-- End offer-post -->
+            </div> <!-- End col-sm-4 -->
+            </div>
+
+            <div id="findsystems">
+            <div class="col-sm-4">
+              <div class="offer-post text-center animated out" data-animation="fadeInRight" data-delay="0" >
+                <div class="offer-icon">
+                  <span>
+                    <img src="{{ url_for('static',filename='assets/images/hash.png') }}" alt="" width="100" height="100" >
+                  </span>
+                </div>
+                <h4>Find System</h4>
+                <p>This operation reads data from data source and finds all the systems which have possibly added the duplicates into the data source.</p>
+              </div> <!-- End offer-post -->
+            </div> <!-- End col-sm-4 -->
+            </div>
+
+            <div id="find-duplicateby-custtype">
+            <div class="col-sm-4">
+              <div class="offer-post text-center animated out" data-animation="fadeInRight" data-delay="0" >
+                <div class="offer-icon">
+                  <span>
+                    <img src="{{ url_for('static',filename='assets/images/comparison.png') }}" alt="" width="100" height="100" >
+                  </span>
+                </div>
+                <h4>Find Duplicates by customer type</h4>
+                <p>Looks up the data set and illustrates the duplicate data by customer type</p>
+              </div> <!-- End offer-post -->
+            </div> <!-- End col-sm-4 -->
+            </div>
+
+            <!--<div id="addrecord">
+            <div class="col-sm-4">
+              <div class="offer-post text-center animated out" data-animation="fadeInRight" data-delay="0" >
+                <div class="offer-icon">
+                  <span>
+                    <img src="{{ url_for('static',filename='assets/images/plus.png') }}" alt="" width="100" height="100" >
+                  </span>
+                </div>
+                <h4>Add User</h4>
+                <p>Lets add a user.</p>
+              </div> &lt;!&ndash; End offer-post &ndash;&gt;
+            </div> &lt;!&ndash; End col-sm-4 &ndash;&gt;
+            </div>-->
+
+            </div> <!-- End row -->
+
+          </div> <!-- End offer-boxes -->
+        </div> <!-- End container -->
+      </div>
+    </section>
+    <!-- Home page section -->
+
+      <section>
+      <div class="sep-section"></div>
+    </section>
+
+    <!-- Features benefits
+    ================================================== -->
+    <section>
+      <div id="features-benefits" class="pad-sec">
+        <div class="container">
+          <div class="title-section text-center animated out" data-animation="fadeInUp" data-delay="0">
+            <div class="row">
+              <div class="col-sm-8 col-sm-offset-2">
+                <h2>Benefits of identical.ly</h2>
+                <hr>
+                <p></p>
+              </div> <!-- edn col-sm-8 -->
+            </div> <!-- End row -->
+          </div> <!-- end title-section -->
+          <div class="row">
+            <div class="col-md-3 without-padding">
+              <div class="left-features-services">
+                <ul class="features-list">
+                  <!-- feature -->
+                  <li>
+                    <div class="left-features-box animated out" data-animation="fadeInLeft" data-delay="0">
+                      <span class="iconbox"> <img class="benefit-icon" src="{{ url_for('static',filename='assets/images/benefits/cleandata.png') }}" alt="" /></span>
+                      <div class="features-box-content">
+                        <h6>Sanitized Data</h6>
+                        <p>Sanitized data is always better data. Fewer errors make for happier clients and less-frustrated employees.</p>
+                      </div> <!-- end features-box-content -->
+                    </div> <!-- end left-features-box -->
+                  </li>
+                  <!-- feature -->
+                  <li>
+                    <div class="left-features-box animated out" data-animation="fadeInLeft" data-delay="0">
+                      <span class="iconbox"><img class="benefit-icon" src="{{ url_for('static',filename='assets/images/benefits/save-time.png') }}" alt="" /></span>
+                      <div class="features-box-content">
+                        <h6>Time Saving</h6>
+                        <p>Compared to existing manual process, automating deduplication process saves time of agents and other users.</p>
+                      </div> <!-- end features-box-content -->
+                    </div> <!-- end left-features-box -->
+                  </li>
+                  <!-- feature -->
+                  <li>
+                    <div class="left-features-box animated out" data-animation="fadeInLeft" data-delay="0">
+                      <span class="iconbox"><img class="benefit-icon" src="{{ url_for('static',filename='assets/images/benefits/savings.png') }}" alt="" /></span>
+                      <div class="features-box-content">
+                        <h6>Wasted budget</h6>
+                        <p>Duplicate data results in poor data for marketing which in turn results in wasted budget for marketing.</p>
+                      </div> <!-- end features-box-content -->
+                    </div> <!-- end left-features-box -->
+                  </li>
+                  <!-- feature -->
+                  <li>
+                    <div class="left-features-box animated out" data-animation="fadeInLeft" data-delay="0">
+                      <span class="iconbox"><img class="benefit-icon" src="{{ url_for('static',filename='assets/images/benefits/peronalization.png') }}" alt="" /></span>
+                      <div class="features-box-content">
+                        <h6>Personalization</h6>
+                        <p>Customers expect personalization and duplicate data hinders personalization.</p>
+                      </div> <!-- end features-box-content -->
+                    </div> <!-- end left-features-box -->
+                  </li>
+                  <!-- feature -->
+                  <li>
+                    <div class="left-features-box animated out" data-animation="fadeInLeft" data-delay="0">
+                      <span class="iconbox"><img class="benefit-icon" src="{{ url_for('static',filename='assets/images/benefits/brand.png') }}" alt="" /></span>
+                      <div class="features-box-content">
+                        <h6>Brand Perception</h6>
+                        <p>Mistakes that come from duplicate data can harm the way that prospects and customers see our business.</p>
+                      </div> <!-- end features-box-content -->
+                    </div> <!-- end left-features-box -->
+                  </li>
+                  <!-- feature -->
+
+                </ul> <!-- end features-list -->
+              </div> <!-- end left-features-service -->
+            </div><!--  end col-md-3 -->
+
+            <div class="col-md-6">
+              <div class="features-image animated out" data-animation="fadeInUp" data-delay="0">
+                <img src="{{ url_for('static',filename='assets/images/benefits/woman.jpg') }}" alt="" >
+              </div> <!-- end features-image -->
+            </div> <!-- end col-md-6 -->
+
+            <div class="col-md-3 without-padding">
+              <div class="right-features-services">
+                <ul class="features-list">
+                  <!-- feature -->
+                  <li>
+                    <div class="right-features-box animated out" data-animation="fadeInRight" data-delay="0">
+                      <span class="iconbox"><img class="benefit-icon" src="{{ url_for('static',filename='assets/images/benefits/lowprice.png') }}" alt="" /></span>
+                      <div class="features-box-content">
+                        <h6>Low-cost solution </h6>
+                        <p>The smaller the storage capacity, the less expensive it is for licensing of data storage.</p>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- feature -->
+                  <li>
+                    <div class="right-features-box animated out" data-animation="fadeInRight" data-delay="0">
+                      <span class="iconbox"><img class="benefit-icon" src="{{ url_for('static',filename='assets/images/benefits/data-analysis.png') }}" alt="" /></span>
+                      <div class="features-box-content">
+                        <h6>Data-backed decisions</h6>
+                        <p>As any enterprise tries to become more data-driven and inject more data into its decision-making processes, Inaccurate data can cause skewed decision making</p>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- feature -->
+                  <li>
+                    <div class="right-features-box animated out" data-animation="fadeInRight" data-delay="0">
+                      <span class="iconbox"><img class="benefit-icon" src="{{ url_for('static',filename='assets/images/benefits/single-customer-view.gif') }}" alt="" /></span>
+                      <div class="features-box-content">
+                        <h6>No single customer view</h6>
+                        <p>78% of consumers will only engage with offers if they have been personalized, taking into account their previous interactions with a company.</p>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- feature -->
+                  <li>
+                    <div class="right-features-box animated out" data-animation="fadeInRight" data-delay="0">
+                      <span class="iconbox"><img class="benefit-icon" src="{{ url_for('static',filename='assets/images/benefits/sales.png') }}" alt="" /></span>
+                      <div class="features-box-content">
+                        <h6>Sales</h6>
+                        <p>Having accurate data and a single customer view is critical for our agency teams as well as online portals.</p>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- feature -->
+                  <li>
+                    <div class="right-features-box animated out" data-animation="fadeInRight" data-delay="0">
+                      <span class="iconbox"><img class="benefit-icon" src="{{ url_for('static',filename='assets/images/benefits/happycustomer.png') }}" alt="" /></span>
+                      <div class="features-box-content">
+                        <h6>Customer happiness</h6>
+                        <p>Improving data quality by deduplication will result in happier customers.</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul> <!-- end features-list -->
+              </div>
+            </div> <!-- end col-md-3 -->
+
+          </div> <!-- end row -->
+        </div> <!-- end container -->
+      </div>
+    </section>
+    <!-- End features-benefits -->
+    <section>
+      <div class="sep-section"></div>
+    </section>
+
+
+
+    <!-- Team
+    ================================================== -->
+    <section>
+      <div id="team-section" class="pad-sec">
+        <div class="container">
+          <div class="title-section animated out" data-animation="fadeInUp" data-delay="0">
+            <div class="row">
+              <div class="col-sm-8 col-sm-offset-2">
+                <h2>Meet our team</h2>
+                <hr>
+                <p></p>
+              </div>
+            </div> <!-- End row -->
+          </div> <!-- end title-section -->
+
+          <div class="team-members">
+            <div class="row">
+
+              <!-- member-team -->
+              <div class="col-sm-4">
+                <div class="member-team animated out" data-animation="fadeInRight" data-delay="0">
+                  <img src="{{ url_for('static',filename='assets/images/team/m3.jpg') }}" alt="" >
+                  <div class="magnifier">
+                    <div class="magnifier-inner">
+                      <h3>Sathya Bhyravabotla</h3>
+                      <p>Tech Lead</p>
+                      <p></p>
+                      <ul class="social-icons">
+                        <li><a data-rel="tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" data-title="Email" href="mailto:sathya.bhyravabotla@gmail.com" data-original-title="" title=""><i class="fa fa-envelope"></i></a></li>
+                        <li><a data-rel="tooltip" data-toggle="tooltip" data-trigger="hover" data-placement="bottom" data-title="LinkedIn" href="https://www.linkedin.com/in/sathyabhyravabotla/" data-original-title="" title="" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+                      </ul>
+                    </div> <!-- End magnifier-inner -->
+                  </div> <!-- End magnifier -->
+                </div> <!-- End member-team -->
+                <br />
+                <h3>Sathya Bhyravabotla</h3>
+                <p>Tech Lead</p>
+              </div> <!-- End col-sm-4 -->
+
+            </div>
+          </div> <!-- End team-members -->
+        </div> <!-- End container -->
+      </div> <!-- End team-section -->
+    </section>
+    <!-- End team section -->
+
+    <section>
+      <div class="sep-section"></div>
+    </section>
+
+    <!-- Features Next
+    ================================================== -->
+      <section>
+        <div id="features-next" class="pad-sec">
+          <div class="container">
+           <div class="title-section text-center animated out" data-animation="fadeInUp" data-delay="0">
+              <div class="row">
+                <div class="col-sm-8 col-sm-offset-2">
+                  <h2>Whats Next?</h2>
+                  <hr>
+                  <p>Additional features we want to implement in future.</p>
+              </div>
+            </div> <!-- End row -->
+          </div> <!-- end title-section -->
+
+           <div class="row">
+            <div class="col-md-3 without-padding">
+              <div class="left-features-services">
+                <ul class="features-list">
+                  <!-- feature -->
+                  <li>
+                    <div class="left-features-box animated out" data-animation="fadeInLeft" data-delay="0">
+                      <span class="iconbox"> <img class="next-icon" src="{{ url_for('static',filename='assets/images/next/fuzzy-match.svg') }}" alt="" /></span>
+                      <div class="features-box-content">
+                        <h6>Fuzzy name matching</h6>
+                        <p>This features will find duplicates with fuzzy name match as well.</p>
+                      </div> <!-- end features-box-content -->
+                    </div> <!-- end left-features-box -->
+                  </li>
+                  <!-- feature -->
+                  <li>
+                    <div class="left-features-box animated out" data-animation="fadeInLeft" data-delay="0">
+                      <span class="iconbox"><img class="next-icon" src="{{ url_for('static',filename='assets/images/next/complexity.png') }}" alt="" /></span>
+                      <div class="features-box-content">
+                        <h6>Complex duplicate check</h6>
+                        <p>Complex business rules with various datasets and duplicate checks </p>
+                      </div> <!-- end features-box-content -->
+                    </div> <!-- end left-features-box -->
+                  </li>
+                  <!-- feature -->
+                  <!--<li>
+                    <div class="left-features-box animated out" data-animation="fadeInLeft" data-delay="0">
+                      <span class="iconbox"><img class="next-icon" src="{{ url_for('static',filename='assets/images/next/scalable.png') }}" alt="" /></span>
+                      <div class="features-box-content">
+                        <h6>Scalable</h6>
+                        <p>Scalable product for bigger datasets, even including cloud infrastructure.</p>
+                      </div> &lt;!&ndash; end features-box-content &ndash;&gt;
+                    </div> &lt;!&ndash; end left-features-box &ndash;&gt;
+                  </li>-->
+
+
+                </ul> <!-- end features-list -->
+              </div> <!-- end left-features-service -->
+            </div><!--  end col-md-3 -->
+
+             <div class="col-md-3 without-padding" style="margin-left: 100px; margin-right: 100px">
+               <div class="right-features-services">
+
+              <!--<div class="features-image animated out" data-animation="fadeInUp" data-delay="0">-->
+<!--                <img src="{{ url_for('static',filename='assets/images/transparent.jpg') }}" alt="" >-->
+                <ul class="features-list">
+                <li>
+                    <div class="left-features-box animated out" data-animation="fadeInLeft" data-delay="0">
+                      <span class="iconbox"><img class="next-icon" src="{{ url_for('static',filename='assets/images/next/scalable.png') }}" alt="" /></span>
+                      <div class="features-box-content">
+                        <h6>Scalable</h6>
+                        <p>Scalable product for bigger datasets, even including cloud infrastructure.</p>
+                      </div> <!-- end features-box-content -->
+                    </div> <!-- end left-features-box -->
+                  </li>
+
+                <li>
+                    <div class="right-features-box animated out" data-animation="fadeInRight" data-delay="0">
+                      <span class="iconbox"><img class="next-icon" src="{{ url_for('static',filename='assets/images/next/data-analysis.png') }}" alt="" /></span>
+                      <div class="features-box-content">
+                        <h6>More data analysis</h6>
+                        <p>Analysis of how data is ending up to be duplicate for better understanding of origination of these duplicates</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div> <!-- end features-image -->
+             </div> <!-- end col-md-6 -->
+
+            <div class="col-md-3 without-padding">
+              <div class="right-features-services">
+                <ul class="features-list">
+                  <!-- feature -->
+                  <li>
+                    <div class="right-features-box animated out" data-animation="fadeInRight" data-delay="0">
+                      <span class="iconbox"><img class="next-icon" src="{{ url_for('static',filename='assets/images/next/authentication.png') }}" alt="" /></span>
+                      <div class="features-box-content">
+                        <h6>Authentication</h6>
+                        <p>Add proper authentication for users since this application interacts with large amount of data</p>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- feature -->
+                  <!--<li>
+                    <div class="right-features-box animated out" data-animation="fadeInRight" data-delay="0">
+                      <span class="iconbox"><img class="next-icon" src="{{ url_for('static',filename='assets/images/next/data-analysis.png') }}" alt="" /></span>
+                      <div class="features-box-content">
+                        <h6>More data analysis</h6>
+                        <p>Analysis of how data is ending up to be duplicate for better understanding of origination of these duplicates</p>
+                      </div>
+                    </div>
+                  </li>-->
+                  <!-- feature -->
+
+
+                </ul> <!-- end features-list -->
+              </div>
+            </div> <!-- end col-md-3 -->
+
+          </div> <!-- end row -->
+          </div><!--  end container -->
+        </div>
+      </section>
+      <!-- End Features Next -->
+
+
+
+
+
+
+  </div> <!-- End wrapper -->
+
+  <!-- Back-to-top
+  ================================================== -->
+  <div class="back-to-top">
+    <i class="fa fa-angle-up fa-3x"></i>
+  </div> <!-- end back-to-top -->
+
+  <!-- JS libraries and scripts -->
+  <script>
+    $(document).ready(function() {
+       $("#myModal").hide();
+
+       // when Remove duplicate div is clicked
+       $('#removeduplicates').click(function(){
+           $.ajax({
+           url: "{{ url_for ('remove_duplicates') }}",
+           beforeSend: function() {
+            $("#myModal").show();
+            $("#preloader").attr('style', 'opacity: 0.8;');
+            $("#preloader").show()
+            $("#loading-animation").show()
+            $("#myModal").attr('style', 'display: block;');
+          },
+           type: "GET",
+           success: function(response) {
+              $("#map_data").empty()
+              $("#preloader").hide()
+              $("#loading-animation").hide()
+              $("#modal-table").append(response)
+              //DO something
+          },
+          error: function(xhr) {
+            //Do Something to handle error
+           $("#preloader").hide()
+              $("#loading-animation").hide()
+         }
+         });
+       });
+
+       // when find agents div is clicked
+       $('#findagents').click(function(){
+           $.ajax({
+           url: "{{ url_for ('plot_agents') }}",
+           beforeSend: function() {
+            $("#myModal").show();
+            $("#preloader").attr('style', 'opacity: 0.8;');
+            $("#preloader").show()
+            $("#loading-animation").show()
+            $("#myModal").attr('style', 'display: block;');
+          },
+           type: "GET",
+           success: function(response) {
+            $("#preloader").hide()
+              $("#loading-animation").hide()
+             $("#modal-table").empty()
+             $("#map_data").append(response)
+              //DO something
+          },
+          error: function(xhr) {
+            //Do Something to handle error
+            $("#preloader").hide()
+              $("#loading-animation").hide()
+         }
+         });
+       });
+
+        // when find agents div is clicked
+       $('#findsystems').click(function(){
+           $.ajax({
+           url: "{{ url_for ('find_systems') }}",
+           beforeSend: function() {
+            $("#myModal").show();
+            $("#preloader").attr('style', 'opacity: 0.8;');
+            $("#preloader").show()
+            $("#loading-animation").show()
+            $("#myModal").attr('style', 'display: block;');
+          },
+           type: "GET",
+           success: function(response) {
+              $("#map_data").empty()
+
+             $("#preloader").hide()
+              $("#loading-animation").hide()
+              $("#modal-table").empty()
+              $("#map_data").append(response)
+              //DO something
+          },
+          error: function(xhr) {
+            //Do Something to handle error
+              $("#preloader").hide()
+              $("#loading-animation").hide()
+         }
+         });
+       });
+
+
+       // when find agents div is clicked
+       $('#find-duplicateby-custtype').click(function(){
+           $.ajax({
+           url: "{{ url_for ('duplicate_customer_type') }}",
+           beforeSend: function() {
+            $("#myModal").show();
+            $("#preloader").attr('style', 'opacity: 0.8;');
+            $("#preloader").show()
+            $("#loading-animation").show()
+            $("#myModal").attr('style', 'display: block;');
+          },
+           type: "GET",
+           success: function(response) {
+              $("#map_data").empty()
+
+             $("#preloader").hide()
+              $("#loading-animation").hide()
+              $("#modal-table").empty()
+              $("#map_data").append(response)
+              //DO something
+          },
+          error: function(xhr) {
+            //Do Something to handle error
+              $("#preloader").hide()
+              $("#loading-animation").hide()
+         }
+         });
+       });
+
+        $(document).on('change', 'input[name="customer_type"]', function() {
+        radio_button_val = $(this).val()
+        // alert(radio_button_val);
+        if ("P" == radio_button_val) {
+            $("#orgname").prop('disabled', true);       // if disabled, enable
+            $("#fname").prop('disabled', false);        // if enabled, disable
+            $("#lname").prop('disabled', false);
+        }
+        else {
+            $("#fname").prop('disabled', true);        // if enabled, disable
+            $("#lname").prop('disabled', true);
+             $("#orgname").prop('disabled', false);
+        }
+        });
+
+
+
+       // when Add User div is clicked
+       $('#form-submit').click(function(){
+           $.ajax({
+           url: "{{ url_for ('add_user') }}",
+           beforeSend: function() {
+            $("#myModal").show();
+            $("#preloader").attr('style', 'opacity: 0.8;');
+            $("#preloader").show()
+            $("#loading-animation").show()
+            $("#myModal").attr('style', 'display: block;');
+            $("#add_user_form").attr('style', 'display: None;');
+          },
+           type: "GET",
+           success: function(response) {
+            $("#preloader").hide()
+             $("#loading-animation").hide()
+             $("#modal-table").empty()
+             $("#add_user_form").append(response);
+              //DO something
+          },
+          error: function(xhr) {
+            //Do Something to handle error
+            $("#preloader").hide();
+            $("#loading-animation").hide();
+            $("#add_user_form").attr('style', 'display: None;');
+         }
+         });
+       });
+
+       // when Add User div is clicked
+       $('#addrecord').click(function(){
+           $("#myModal").show();
+            // $("#preloader").attr('style', 'opacity: 0.8;');
+            // $("#preloader").show()
+            // $("#loading-animation").show()
+            $("#myModal").attr('style', 'display: block;');
+            $("#add_user_form").attr('style', 'display: block;');
+       });
+
+       $('#close').click(function(){
+          $("#modal-table").empty()
+          $("#map_data").empty()
+          $("#preloader").hide()
+          $("#loading-animation").hide()
+          $("#myModal").attr('style', 'display: none;');
+          $("#add_user_form").attr('style', 'display: None;');
+       })
+    });
+  </script>
+  <script src="{{ url_for('static',filename='assets/js/jquery-1.11.3.min.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/bootstrap.min.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/bootstrap-hover-dropdown.min.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/jquery.appear.min.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/jquery.bxslider.min.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/jquery.owl.carousel.min.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/jquery.countTo.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/jquery.imagesloaded.min.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/jquery.isotope.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/jquery.placeholder.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/jquery.smoothscroll.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/jquery.stellar.min.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/jquery.waypoints.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/jquery.fitvids.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/jquery.magnific-popup.min.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/jquery.ajaxchimp.min.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/jquery.countdown.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/jquery.navbar-scroll.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/jquery.gmaps.js') }} "></script>
+  <script src="{{ url_for('static',filename='assets/js/main.js') }} "></script>
+
+
+
+</body>
+</html>
