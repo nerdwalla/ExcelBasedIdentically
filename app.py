@@ -21,6 +21,8 @@ def index():
     elif request.method == 'GET':
         # print('Page Loaded')
         print('Page Loaded')
+        load_data()
+        find_duplicate_customers()
         # find_duplicate_customers()
     return render_template('index.html')
 
