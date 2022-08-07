@@ -227,12 +227,12 @@ def reload_customer_data():
             customer_df.fillna('', inplace=True)
 
 
-# load_data()
-# find_duplicate_customers()
+load_data()
+find_duplicate_customers()
 
-if __name__ == '__main__':
-    # Load Data
-    load_data()
-    find_duplicate_customers()
-    # Run Application
-    app.run()
+# if __name__ == '__main__':
+#     # Load Data
+#     load_data()
+#     find_duplicate_customers()
+#     # Run Application
+#     app.run()
