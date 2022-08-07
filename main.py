@@ -21,8 +21,6 @@ def index():
     elif request.method == 'GET':
         # print('Page Loaded')
         print('Page Loaded')
-        load_data()
-        find_duplicate_customers()
         # find_duplicate_customers()
     return render_template('index.html')
 
@@ -94,7 +92,7 @@ def duplicate_customer_type():
 
 def build_customer_table(duplicate_customers):
     if not duplicate_customers.empty:
-        customer_table_str = '<caption>Duplicate records removed <span class="count">(Count: ' + str(len(
+        customer_table_str = '<caption>Duplicate records Identified <span class="count">(Count: ' + str(len(
             duplicate_customers)) + ')<span></caption><thead> <tr><th>Customer ID</th><th>Company Name</th><th>First ' \
                                     'Name</th> <th>Last Name</th><th>Updated by</th></tr></thead><tbody> '
         for idx, row in duplicate_customers.iterrows():
@@ -228,6 +226,9 @@ def reload_customer_data():
             customer_df = result
             customer_df.fillna('', inplace=True)
 
+
+# load_data()
+# find_duplicate_customers()
 
 if __name__ == '__main__':
     # Load Data
